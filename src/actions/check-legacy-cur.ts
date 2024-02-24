@@ -11,7 +11,6 @@ const checkLegacyCur = async (region: string): Promise<LegacyCurInfo> => {
 		const input = {};
 		const command = new DescribeReportDefinitionsCommand(input);
 		const response = await curClient.send(command);
-		console.log(JSON.stringify(response, null, 2))
 		if (response.ReportDefinitions && response.ReportDefinitions.length > 0) {
 			isLegacyCurSetup = true;
 		}
