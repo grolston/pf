@@ -15,15 +15,13 @@ async function checkConfigExists(regions: string[]): Promise<ConfigInfo[]> {
       const recorderResponse = await configServiceClient.send(new DescribeConfigurationRecorderStatusCommand({}));
       const recorderExists = recorderResponse.ConfigurationRecordersStatus?.length !== 0;
       if(recorderExists){
-      //console.log(`AWS Config Recorder exists in ${region}: ${recorderExists}`);
-      configDetail.configRecorderFound = true
+        configDetail.configRecorderFound = true
       }
       // Check if Config delivery channel exists
       const channelResponse = await configServiceClient.send(new DescribeDeliveryChannelsCommand({}));
       const channelExists = channelResponse.DeliveryChannels?.length !== 0;
       if(channelExists){
-      //console.log(`AWS Config Delivery Channel exists in ${region}: ${channelExists}`);
-      configDetail.configDeliveryChannelFound = false
+        configDetail.configDeliveryChannelFound = true
       }
     configDetails.push(configDetail)
     } catch (error) {
