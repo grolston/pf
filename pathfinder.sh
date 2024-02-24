@@ -1,7 +1,7 @@
 #!/bin/bash
 
 mkdir ./pathfinder -p
-cd ./pathfiner
+cd ./pathfinder
 
 for i in \
   '@aws-sdk/client-cloudtrail' \
