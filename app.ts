@@ -41,13 +41,13 @@ const main = async (): Promise<void> => {
 	if (accountType.isInOrganization && accountType.isManagementAccount) {
 		fs.appendFileSync(reportFile, `\n\n---------------------------------------------------------`);
 		fs.appendFileSync(reportFile, `\n\nLegacy CUR\n`);
-		const legacyCurCheck = await checkLegacyCur(region);
+		const legacyCurCheck = await checkLegacyCur('us-east-1');
 		console.dir(legacyCurCheck, {depth: null, colors: true});
 		fs.appendFileSync(reportFile, `\n  Is legacy CUR setup: ${legacyCurCheck.isLegacyCurSetup}`);
 
 		fs.appendFileSync(reportFile, `\n\n---------------------------------------------------------`);
 		fs.appendFileSync(reportFile, `\n\nAWS ORGANIZATION POLICY TYPES\n`);
-    const enableOrgPoliciesCheck = await getEnabledOrgPolicyTypes(region);
+    const enableOrgPoliciesCheck = await getEnabledOrgPolicyTypes('us-east-1');
 		console.dir(enableOrgPoliciesCheck, {depth: null, colors: true});
 		fs.appendFileSync(reportFile, `\n  Service Control Policies (SCP) enabled: ${enableOrgPoliciesCheck.scpEnabled}`);
 		fs.appendFileSync(reportFile, `\n  Tag Policies enabled: ${enableOrgPoliciesCheck.tagPolicyEnabled}`);
@@ -55,7 +55,7 @@ const main = async (): Promise<void> => {
 
 		fs.appendFileSync(reportFile, `\n\n---------------------------------------------------------`);
 		fs.appendFileSync(reportFile, `\n\nAWS ORGANIZATION ENABLED SERVICES\n`);
-    const orgEnabledServices = await getEnabledOrgServices(region);
+    const orgEnabledServices = await getEnabledOrgServices('us-east-1');
 		console.dir(orgEnabledServices, {depth: null, colors: true});
 		fs.appendFileSync(reportFile, `\n  The following AWS Services are enabled within your AWS Organization:`);
 		for (const orgService of orgEnabledServices){
@@ -112,7 +112,7 @@ const main = async (): Promise<void> => {
 
 		fs.appendFileSync(reportFile, `\n\n---------------------------------------------------------`);
 		fs.appendFileSync(reportFile, `\n\nAWS ORGANIZATION DETAILS\n`);
-    const orgDetails = await getOrgDetails(region);
+    const orgDetails = await getOrgDetails('us-east-1');
 		console.dir(orgDetails, {depth: null, colors: true});
 		fs.appendFileSync(reportFile, `\n  AWS Organization Id: ${orgDetails.id}`);
 		fs.appendFileSync(reportFile, `\n  AWS Organization ARN: ${orgDetails.arn}`);
@@ -121,7 +121,7 @@ const main = async (): Promise<void> => {
     if(orgDetails.rootOuId){
 			fs.appendFileSync(reportFile, `\n\n---------------------------------------------------------`);
 			fs.appendFileSync(reportFile, `\n\nAWS ORGANIZATION TOP-LEVEL ORGANIZATION UNITS\n`);
-      const orgOus = await getOrgTopLevelOus(region, orgDetails.rootOuId);
+      const orgOus = await getOrgTopLevelOus('us-east-1', orgDetails.rootOuId);
 			console.dir(orgOus, {depth: null, colors: true});
 			fs.appendFileSync(reportFile, `\n  List of Organization's top-level OUs and AWS accounts:`);
 			if(orgOus && orgOus.length > 0){
@@ -160,11 +160,11 @@ const main = async (): Promise<void> => {
 		}
 
 	} else if (accountType.isInOrganization && !accountType.isManagementAccount) {
-		const message:string = '\nWARNING: You are running PAAT from an account that is a member of your AWS Organization. Please run the solution from your AWS Management account.'
+		const message:string = '\nWARNING: You are running Pathfinder from an account that is a member of your AWS Organization. Please run the solution from your AWS Management account.'
 		console.warn(message);
 		fs.appendFileSync(reportFile, message);
 	} else {
-		const message:string = '\nWARNING: You are running PAAT from an account that not part of an AWS Organization. This account will be treated as a standalone account.'
+		const message:string = '\nWARNING: You are running Pathfinder from an account that not part of an AWS Organization. This account will be treated as a standalone account.'
 		console.warn(message);
 		fs.appendFileSync(reportFile, message);
 	}
