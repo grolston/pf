@@ -23,10 +23,12 @@ export const defineAccountType = async (region: string): Promise<AccountType> =>
   try {
     const currentAccountId = await getAccountId(region);
     if(currentAccountId){
+      console.log(`current account is: ${currentAccountId}`)
       const describeOrganizationCommand = new DescribeOrganizationCommand({});
       const describeOrganizationResponse = await organizationsClient.send(describeOrganizationCommand);
       // the account is not standalone and part of AWS Organization
       if (describeOrganizationResponse.Organization?.MasterAccountId) {
+        console.log(`current management account is: ${describeOrganizationResponse.Organization?.MasterAccountId}`)
         if(describeOrganizationResponse.Organization?.MasterAccountId === currentAccountId){
           // this is an organization and this is the management account
           let isManagementAccount = true;
