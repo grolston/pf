@@ -96,7 +96,7 @@ const main = async (): Promise<void> => {
 			fs.appendFileSync(reportFile, `\n  Control Tower home region: ${controlTowerDetails.controlTowerRegion}`);
 			fs.appendFileSync(reportFile, `\n  Control Tower status: ${controlTowerDetails.status}`);
 			fs.appendFileSync(reportFile, `\n  Control Tower Landing Zone version: ${controlTowerDetails.deployedVersion}`);
-			fs.appendFileSync(reportFile, `\n  Latest available version: ${controlTowerDetails.deployedVersion}`);
+			fs.appendFileSync(reportFile, `\n  Latest available version: ${controlTowerDetails.latestAvailableVersion}`);
 			fs.appendFileSync(reportFile, `\n  Drift Status: ${controlTowerDetails.driftStatus}`);
 		}else {
 			fs.appendFileSync(reportFile, `\n  AWS Control Tower is not deployed in the AWS Organization`);
