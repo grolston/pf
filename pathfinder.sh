@@ -14,8 +14,8 @@ for i in \
   '@aws-sdk/client-cloudformation' \
   '@aws-sdk/client-organizations' \
   '@aws-sdk/client-sso-admin' \
-   ; do npm install "$i" --quiet; done
-   
+   ; do npm install "$i" --silent; done
+
 echo "installation complete, starting pathfinder..."
 # EXAMPLE URL...will change....
 download_url="https://raw.githubusercontent.com/grolston/pf/main/dist/pathfinder.js"
