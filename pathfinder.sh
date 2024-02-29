@@ -2,6 +2,7 @@
 
 mkdir ./pathfinder -p
 cd ./pathfinder
+echo "installing npm packages..."
 
 for i in \
   '@aws-sdk/client-cloudtrail' \
@@ -13,9 +14,9 @@ for i in \
   '@aws-sdk/client-cloudformation' \
   '@aws-sdk/client-organizations' \
   '@aws-sdk/client-sso-admin' \
-   ; do npm install "$i"; done
-
+   ; do npm install "$i" --quiet; done
+   
+echo "installation complete, starting pathfinder..."
 # EXAMPLE URL...will change....
 download_url="https://raw.githubusercontent.com/grolston/pf/main/dist/pathfinder.js"
 curl -sS $download_url | node
-
