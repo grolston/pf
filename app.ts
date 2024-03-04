@@ -461,7 +461,7 @@ const main = async (): Promise<void> => {
 			secTaskNumber++
 		}
 		if(!securityHubDelegated){
-			const message:string = await tasks.delegateAdministrationAwsService(secTaskNumber, ssoWaypoint, "Security Hub");
+			const message:string = await tasks.delegateAdministrationAwsService(secTaskNumber, secWaypoint, "Security Hub");
 			fs.appendFileSync(reportFile, `\n  ${message}`);
 			secTaskNumber++
 		}
