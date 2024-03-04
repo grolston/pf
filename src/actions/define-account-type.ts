@@ -7,8 +7,8 @@ async function getAccountId(region:string): Promise<string> {
   const stsClient:STSClient = new STSClient({region});
   try {
     const getCallerIdentityCommand = new GetCallerIdentityCommand({});
-    const { Account } = await stsClient.send(getCallerIdentityCommand);
-    return Account!;
+    const Account  = await stsClient.send(getCallerIdentityCommand);
+    return Account.Account!
   } catch (error) {
     console.error("Error getting account ID:", error);
     throw error;
@@ -21,31 +21,29 @@ export const defineAccountType = async (region: string): Promise<AccountType> =>
   let isInOrganization:boolean = false
   let isManagementAccount:boolean = false
   try {
-    const currentAccountId = await getAccountId(region);
+    const currentAccountId:string = await getAccountId(region);
     if(currentAccountId){
-      console.log(`current account is: ${currentAccountId}`)
       const describeOrganizationCommand = new DescribeOrganizationCommand({});
       const describeOrganizationResponse = await organizationsClient.send(describeOrganizationCommand);
       // the account is not standalone and part of AWS Organization
       if (describeOrganizationResponse.Organization?.MasterAccountId) {
-        console.log(`current management account is: ${describeOrganizationResponse.Organization?.MasterAccountId}`)
-        if(describeOrganizationResponse.Organization?.MasterAccountId === currentAccountId){
+        const managementAccountId:string = describeOrganizationResponse.Organization?.MasterAccountId
+        if(managementAccountId == currentAccountId){
           // this is an organization and this is the management account
-          let isManagementAccount = true;
-          let isInOrganization = true;
+          isManagementAccount = true;
+          isInOrganization = true;
         }
         else{
           // there is an organization, but this isn't the management account
-          let isInOrganization = true;
+          isInOrganization = true;
         }
       } else {
-        // there isn't an organization
-        let isInOrganization = false;
+        // there isn't an organization and this account is standalone
+        isInOrganization = false;
       }
     }
   } catch (error) {
     console.error("Error:", error);
-    return { isInOrganization: false };
   } finally {
     organizationsClient.destroy();
   }
