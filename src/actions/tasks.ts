@@ -85,7 +85,7 @@ export async function delegateAdministrationAwsService(taskNumber:number, waypoi
 }
 
 export async function enableAwsCur(taskNumber:number, waypoint:string): Promise<string> {
-  const task:string = `${waypoint} - Task ${taskNumber} - Enable and create an Cost and Utilization Report in the billing console.`;
+  const task:string = `${waypoint} - Task ${taskNumber} - Enable and create a Cost and Utilization Report (CUR) in the billing console.`;
   return task
 }
 
