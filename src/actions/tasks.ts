@@ -1,23 +1,3 @@
-export enum Waypoint {
-  "Management Account",
-  "Governance",
-  "Financial Management",
-  "Multi-Account Strategy",
-  "Landing Zone",
-  "Identity",
-  "Security",
-  "Network",
-  "Observability",
-  "Backup and Recovery",
-}
-
-export enum TopLevelOus{
-  "Workloads",
-  "Security",
-  "Transitional",
-  "Suspended",
-  "Exceptions"
-}
 
 export async function deployConfigRecorderTask(taskNumber:number, waypoint:string,  region:string): Promise<string> {
   const task:string = `${waypoint} - Task ${taskNumber} - Deploy AWS Config Recorder to the ${region} region.`;
@@ -90,6 +70,11 @@ export async function enableAwsCur(taskNumber:number, waypoint:string): Promise<
 }
 
 export async function reviewAccountEmailAddresses(taskNumber:number, waypoint:string): Promise<string> {
-  const task:string = `${waypoint} - Task ${taskNumber} - Review and validate your email addresses and email domains for the root user administrator for the account is up to date.`;
+  const task:string = `${waypoint} - Task ${taskNumber} - Review and validate your email addresses and their domains for the root user administrator for management and all member accounts.`;
+  return task
+}
+
+export async function enablePolicyTypeTask(taskNumber:number, waypoint:string, policyType:string): Promise<string>{
+  const task:string = `${waypoint} - Task ${taskNumber} - Enable the policy type ${policyType} within your AWS Organization.`;
   return task
 }

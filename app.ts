@@ -200,6 +200,21 @@ const main = async (): Promise<void> => {
 			fs.appendFileSync(reportFile, `\n  ${message}`);
 			govTaskNumber++
 		}
+		if(!enableOrgPoliciesCheck.scpEnabled) {
+			const message:string = await tasks.enablePolicyTypeTask(govTaskNumber, govWaypoint, "Service Control Policy");
+			fs.appendFileSync(reportFile, `\n  ${message}`);
+			govTaskNumber++
+		}
+		if(!enableOrgPoliciesCheck.tagPolicyEnabled) {
+			const message:string = await tasks.enablePolicyTypeTask(govTaskNumber, govWaypoint, "Tag Policy");
+			fs.appendFileSync(reportFile, `\n  ${message}`);
+			govTaskNumber++
+		}
+		if(!enableOrgPoliciesCheck.backupPolicyEnabled) {
+			const message:string = await tasks.enablePolicyTypeTask(govTaskNumber, govWaypoint, "Backup Policy");
+			fs.appendFileSync(reportFile, `\n  ${message}`);
+			govTaskNumber++
+		}
 
 		fs.appendFileSync(reportFile, `\n\n*********************************************************`);
 		fs.appendFileSync(reportFile, `\n                FINANCIAL MANAGEMENT`);
@@ -319,6 +334,11 @@ const main = async (): Promise<void> => {
 		const message:string = await tasks.reviewAccountEmailAddresses(masTaskNumber, masWaypoint);
 			fs.appendFileSync(reportFile, `\n  ${message}`);
 			masTaskNumber++
+		if(!enableOrgPoliciesCheck.scpEnabled) {
+			const message:string = await tasks.enablePolicyTypeTask(masTaskNumber, masWaypoint, "Service Control Policy");
+			fs.appendFileSync(reportFile, `\n  ${message}`);
+			masTaskNumber++
+		}
 		if(!transitionalFound){
 			const message:string = await tasks.deployOuTask(masTaskNumber, masWaypoint, "Transitional");
 			fs.appendFileSync(reportFile, `\n  ${message}`);
@@ -377,6 +397,11 @@ const main = async (): Promise<void> => {
 			fs.appendFileSync(reportFile, `\n  ${message}`);
 			lzTaskNumber++
 		}
+		if(!orgEnabledServices.find(param=> param.service === 'member.org.stacksets.cloudformation.amazonaws.com')){
+			const message:string = await tasks.enableAwsOrganizationService(lzTaskNumber, lzWaypoint, "AWS CloudFormation");
+			fs.appendFileSync(reportFile, `\n  ${message}`);
+			lzTaskNumber++
+		}
 
 		fs.appendFileSync(reportFile, `\n\n*********************************************************`);
 		fs.appendFileSync(reportFile, `\n                    IDENTITY`);
@@ -398,6 +423,11 @@ const main = async (): Promise<void> => {
 		}
 		if(!identityDelegated){
 			const message:string = await tasks.delegateAdministrationAwsService(ssoTaskNumber, ssoWaypoint, "AWS IAM Identity Center");
+			fs.appendFileSync(reportFile, `\n  ${message}`);
+			ssoTaskNumber++
+		}
+		if(!enableOrgPoliciesCheck.scpEnabled) {
+			const message:string = await tasks.enablePolicyTypeTask(ssoTaskNumber, ssoWaypoint, "Service Control Policy");
 			fs.appendFileSync(reportFile, `\n  ${message}`);
 			ssoTaskNumber++
 		}
@@ -435,6 +465,11 @@ const main = async (): Promise<void> => {
 		fs.appendFileSync(reportFile, `\n\nSECURITY RECOMMENDED TASKS:`);
 		let secTaskNumber: number = 1
 		const secWaypoint:string = "Security"
+		if(!enableOrgPoliciesCheck.scpEnabled) {
+			const message:string = await tasks.enablePolicyTypeTask(secTaskNumber, secWaypoint, "Service Control Policy");
+			fs.appendFileSync(reportFile, `\n  ${message}`);
+			secTaskNumber++
+		}
 		if(!orgEnabledServices.find(param=> param.service === 'guardduty.amazonaws.com')){
 			const message:string = await tasks.enableAwsOrganizationService(secTaskNumber, secWaypoint, "AWS GuardDuty");
 			fs.appendFileSync(reportFile, `\n  ${message}`);
@@ -515,6 +550,11 @@ const main = async (): Promise<void> => {
 			fs.appendFileSync(reportFile, `\n  ${message}`);
 			netTaskNumber++
 		}
+		if(!enableOrgPoliciesCheck.scpEnabled) {
+			const message:string = await tasks.enablePolicyTypeTask(netTaskNumber, networkWaypoint, "Service Control Policy");
+			fs.appendFileSync(reportFile, `\n  ${message}`);
+			netTaskNumber++
+		}
 
 		fs.appendFileSync(reportFile, `\n\n*********************************************************`);
 		fs.appendFileSync(reportFile, `\n                  OBSERVABILITY`);
@@ -552,6 +592,16 @@ const main = async (): Promise<void> => {
 		}
 		if(!backupDelegated){
 			const message:string = await tasks.delegateAdministrationAwsService(backTaskNumber, backupWaypoint, "AWS Backup");
+			fs.appendFileSync(reportFile, `\n  ${message}`);
+			backTaskNumber++
+		}
+		if(!enableOrgPoliciesCheck.backupPolicyEnabled) {
+			const message:string = await tasks.enablePolicyTypeTask(backTaskNumber, backupWaypoint, "Backup Policy");
+			fs.appendFileSync(reportFile, `\n  ${message}`);
+			backTaskNumber++
+		}
+		if(!enableOrgPoliciesCheck.scpEnabled) {
+			const message:string = await tasks.enablePolicyTypeTask(backTaskNumber, backupWaypoint, "Service Control Policy");
 			fs.appendFileSync(reportFile, `\n  ${message}`);
 			backTaskNumber++
 		}
